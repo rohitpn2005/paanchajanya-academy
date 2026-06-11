@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SITE } from "@/lib/site";
 import { useLead } from "./LeadProvider";
+import type { Plan, KidsActivity } from "@/lib/types";
 
 const WA = "919880422933";
 const TEL = "+91 98804 22933";
@@ -13,7 +14,22 @@ type Action = { label: string; href: string };
 type Book = { label: string; program?: string; plan?: string };
 type Msg = { role: "bot" | "user"; text: string; chips?: string[]; action?: Action; book?: Book };
 
+type KB = {
+  plans: Plan[];
+  hours: string;
+  address: string;
+  kids: { name: string; timing?: string }[];
+};
+
 const CHIPS = ["Programs", "Timings", "Pricing", "Location", "Book a trial"];
+const PROG_CHIPS = ["Yoga", "House of Champions", "Table tennis", "Kids"];
+
+const SHORT: Record<string, string> = {
+  "PaanchaJanya Yoga": "Yoga",
+  "House of Champions": "House of Champions",
+  "Table Tennis (PYTTA)": "Table tennis",
+  "Kids Activities": "Kids",
+};
 
 const GREETING: Msg = {
   role: "bot",
@@ -21,7 +37,27 @@ const GREETING: Msg = {
   chips: CHIPS,
 };
 
-function reply(raw: string): Msg {
+function progOf(q: string): string | null {
+  if (/table tennis|ping pong|pytta|\btt\b/.test(q)) return "Table Tennis (PYTTA)";
+  if (/yoga|hatha|aerial|meditat|pranayam/.test(q)) return "PaanchaJanya Yoga";
+  if (/champion|mma|boxing|muay|kick|wrestl|fight|combat|bjj/.test(q)) return "House of Champions";
+  if (/karate|dance|chess|\bkid|child|children|son|daughter/.test(q)) return "Kids Activities";
+  return null;
+}
+
+function planLines(kb: KB, program: string): string {
+  return kb.plans
+    .filter((p) => p.program === program)
+    .map((p) => `\u2022 ${p.name}: ${p.price}${p.popular ? "  (best value)" : ""}`)
+    .join("\n");
+}
+
+function startingPrice(kb: KB, program: string): string {
+  const list = kb.plans.filter((p) => p.program === program);
+  return list[0]?.price || "on enquiry";
+}
+
+function reply(raw: string, kb: KB): Msg {
   const q = raw.toLowerCase().trim();
   const has = (...k: string[]) => k.some((w) => q.includes(w));
 
@@ -30,46 +66,80 @@ function reply(raw: string): Msg {
     return { role: "bot", text: "Hello. Ask me about programs, timings, pricing, booking or our location.", chips: CHIPS };
   if (has("thank", "thanks", "thx")) return { role: "bot", text: "Anytime. Anything else I can help with?", chips: CHIPS };
 
-  if (has("where", "location", "address", "reach", "direction", "map", "located", "find you"))
-    return { role: "bot", text: `We are all under one roof at ${SITE.address}.`, action: { label: "Get directions", href: directions } };
+  // LOCATION (one roof for every academy)
+  if (has("where", "location", "address", "reach", "direction", "map", "located", "find you")) {
+    const p = progOf(q);
+    const lead = p && p !== "Kids Activities" ? `${SHORT[p]} runs at our main address, the same roof as every academy. ` : "All four academies share one roof. ";
+    return { role: "bot", text: `${lead}We are at ${kb.address}.`, action: { label: "Get directions", href: directions } };
+  }
 
-  if (has("hour", "open", "timing", "time", "when", "schedule", "close"))
+  // PRICING / MEMBERSHIP PLANS (from the site data)
+  if (has("price", "cost", "fee", "fees", "charge", "plan", "plans", "membership", "monthly", "package", "rate", "how much")) {
+    const p = progOf(q);
+    if (p === "Kids Activities")
+      return { role: "bot", text: "Kids activities are priced on enquiry, since it depends on the activity and schedule. Tell us which one and we will share the exact fee.", book: { label: "Ask about kids fees", program: "Kids Activities" } };
+    if (p) {
+      const lines = planLines(kb, p);
+      if (lines) return { role: "bot", text: `${SHORT[p]} memberships:\n${lines}\n\nAll plans cover every discipline in the academy. Want to book a trial?`, book: { label: `Book ${SHORT[p]}`, program: p } };
+    }
+    const y = startingPrice(kb, "PaanchaJanya Yoga");
+    const h = startingPrice(kb, "House of Champions");
+    const t = startingPrice(kb, "Table Tennis (PYTTA)");
     return {
       role: "bot",
-      text: "We run Monday to Saturday, with Sunday by appointment. Kids batches run mostly in the evening: table tennis 5 to 9 PM, yoga and dance 5 to 6 PM, karate three days a week, and chess on weekends 9:30 to 11 AM. Tell me a program and I will give you its exact timing.",
-      chips: ["Table tennis", "Yoga", "Karate", "Dance", "Chess"],
+      text: `Here is a quick price guide:\n\u2022 Yoga from ${y} a month\n\u2022 House of Champions from ${h} a month\n\u2022 Table Tennis from ${t} a month\n\u2022 Kids activities on enquiry\n\nAsk about any program for the full plan list.`,
+      chips: PROG_CHIPS,
     };
+  }
 
-  if (has("price", "cost", "fee", "fees", "charge", "plan", "membership", "monthly", "how much"))
-    return { role: "bot", text: "Memberships are flexible, with monthly and quarterly options that vary by program. For the latest pricing for the program you want, message us and we will share current rates right away.", action: { label: "Ask on WhatsApp", href: waLink("Hello PaanchaJanya, please share current pricing.") } };
+  // TIMINGS (general hours + per program)
+  if (has("hour", "open", "timing", "time", "when", "schedule", "close", "batch")) {
+    const p = progOf(q);
+    const general = kb.hours.split("|").map((s) => s.trim()).filter(Boolean).join("\n");
+    if (p === "Kids Activities" || /karate|dance|chess/.test(q)) {
+      const lines = kb.kids.filter((k) => k.timing).map((k) => `\u2022 ${k.name}: ${k.timing}`).join("\n");
+      return { role: "bot", text: `Kids class timings:\n${lines || "Ask us for the latest kids schedule."}`, book: { label: "Book a kids class", program: "Kids Activities" } };
+    }
+    if (p === "PaanchaJanya Yoga")
+      return { role: "bot", text: `Yoga runs daily in morning and evening batches, beginner to competitive.\n\nReception hours:\n${general}`, book: { label: "Book yoga", program: p } };
+    if (p === "House of Champions")
+      return { role: "bot", text: `House of Champions runs morning and evening sessions across all disciplines.\n\nReception hours:\n${general}`, book: { label: "Book a combat trial", program: p } };
+    if (p === "Table Tennis (PYTTA)")
+      return { role: "bot", text: `Table tennis runs daily, three sessions a week for members, with junior coaching from 5 to 9 PM.\n\nReception hours:\n${general}`, book: { label: "Book table tennis", program: p } };
+    return { role: "bot", text: `Our reception hours:\n${general}\n\nTell me a program and I will give you its class timings.`, chips: PROG_CHIPS };
+  }
 
-  if (has("book", "trial", "join", "enrol", "enroll", "register", "sign up", "start", "admission"))
-    return { role: "bot", text: "Booking takes a minute. Tell us the program and we will set up a trial and confirm your slot on WhatsApp.", book: { label: "Start booking" } };
+  // BOOKING -> open the form
+  if (has("book", "trial", "join", "enrol", "enroll", "register", "sign up", "start", "admission")) {
+    const p = progOf(q);
+    if (p) return { role: "bot", text: `Great choice. Let us set up your ${SHORT[p]} booking.`, book: { label: `Book ${SHORT[p]}`, program: p } };
+    return { role: "bot", text: "Booking takes a minute. Open the form, add your details and we will confirm your slot.", book: { label: "Start booking" } };
+  }
 
+  // CONTACT
   if (has("contact", "phone", "number", "call", "whatsapp", "talk"))
     return { role: "bot", text: `You can reach the front desk at ${TEL}.`, action: { label: "Message on WhatsApp", href: waLink("Hello PaanchaJanya, I have a question.") } };
 
-  // programs
+  // PROGRAM INFO (describe + book)
   if (has("table tennis", "tt", "ping pong", "pytta"))
-    return { role: "bot", text: "Table tennis runs daily from 5 to 9 PM, beginner to advanced, with full tournament preparation. It builds focus, speed and a real competitive spirit.", book: { label: "Book table tennis", program: "Table Tennis (PYTTA)" } };
+    return { role: "bot", text: "Table tennis runs daily from 5 to 9 PM, beginner to advanced, with full tournament preparation.", book: { label: "Book table tennis", program: "Table Tennis (PYTTA)" } };
   if (has("yoga", "hatha", "aerial", "meditat", "pranayam"))
-    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation. Kids yoga runs daily 5 to 6 PM, and there are morning and evening batches for adults too. It improves flexibility, balance and calm.", book: { label: "Book yoga", program: "PaanchaJanya Yoga" } };
+    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation, in morning and evening batches.", book: { label: "Book yoga", program: "PaanchaJanya Yoga" } };
   if (has("champion", "mma", "boxing", "muay", "kick", "wrestl", "fight", "combat", "bjj"))
-    return { role: "bot", text: "House of Champions covers MMA, Muay Thai, boxing, wrestling and kickboxing with coaches who have competed. Beginners are welcome, no experience needed.", book: { label: "Book a combat trial", program: "House of Champions" } };
-  if (has("karate", "martial"))
-    return { role: "bot", text: "Karate and fitness training for kids runs three days a week. It builds strength, self discipline, confidence and fitness.", book: { label: "Book karate", program: "Kids Activities", plan: "Karate" } };
+    return { role: "bot", text: "House of Champions covers MMA, Muay Thai, boxing, wrestling and kickboxing with coaches who have competed. Beginners welcome.", book: { label: "Book a combat trial", program: "House of Champions" } };
+  if (has("karate"))
+    return { role: "bot", text: "Karate and fitness training for kids runs three days a week.", book: { label: "Book karate", program: "Kids Activities", plan: "Karate" } };
   if (has("dance"))
-    return { role: "bot", text: "Kids dance runs daily from 5 to 6 PM. The sessions are fun and build rhythm, coordination and expression.", book: { label: "Book dance", program: "Kids Activities", plan: "Dance" } };
+    return { role: "bot", text: "Kids dance runs daily from 5 to 6 PM.", book: { label: "Book dance", program: "Kids Activities", plan: "Dance" } };
   if (has("chess"))
-    return { role: "bot", text: "Offline chess runs on weekends from 9:30 to 11 AM. It sharpens logical thinking, focus and strategy.", book: { label: "Book chess", program: "Kids Activities", plan: "Chess" } };
+    return { role: "bot", text: "Offline chess runs on weekends from 9:30 to 11 AM.", book: { label: "Book chess", program: "Kids Activities", plan: "Chess" } };
   if (has("kid", "child", "children", "son", "daughter", "age"))
-    return { role: "bot", text: "Our kids academy offers table tennis, yoga, karate, dance and chess, in small age grouped batches from around age four. Tell me which activity and I will share its timing.", chips: ["Table tennis", "Yoga", "Karate", "Dance", "Chess"] };
+    return { role: "bot", text: "Our kids academy offers table tennis, yoga, karate, dance and chess in small batches. Ask about kids timings or pricing, or pick an activity.", chips: ["Kids timings", "Kids pricing", "Book a kids class"] };
   if (has("workshop", "event", "camp"))
-    return { role: "bot", text: "We host workshops and camps across all four academies through the year. Check the workshops page for what is coming up, or ask us to notify you of the next one.", action: { label: "See workshops", href: "/workshops" } };
+    return { role: "bot", text: "We host workshops and camps across all four academies through the year. See the workshops page for what is coming up.", action: { label: "See workshops", href: "/workshops" } };
   if (has("program", "programme", "class", "activit", "offer", "discipline", "what do you"))
-    return { role: "bot", text: "Four academies under one roof: Yoga, House of Champions for combat sport, Table Tennis, and the Kids academy with dance, karate, chess, yoga and table tennis. Which one interests you?", chips: ["Yoga", "Champions", "Table tennis", "Kids"] };
+    return { role: "bot", text: "Four academies under one roof: Yoga, House of Champions for combat sport, Table Tennis, and the Kids academy. Which one interests you?", chips: PROG_CHIPS };
 
-  // vague fallback -> clarify
   return {
     role: "bot",
     text: "I want to get you the right answer. Are you asking about a program, class timings, pricing, booking a trial, or our location?",
@@ -77,26 +147,38 @@ function reply(raw: string): Msg {
   };
 }
 
-export default function FloatingActions() {
+export default function FloatingActions({
+  plans = [],
+  hours = "Mon to Fri 6:00 AM to 9:00 PM|Saturday 7:00 to 9:00 AM|Sunday by appointment",
+  address = SITE.address,
+  kids = [],
+}: {
+  plans?: Plan[];
+  hours?: string;
+  address?: string;
+  kids?: KidsActivity[];
+}) {
   const { open: openLead } = useLead();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([GREETING]);
   const [val, setVal] = useState("");
   const bodyRef = useRef<HTMLDivElement>(null);
 
+  const kb: KB = { plans, hours, address, kids: kids.map((k) => ({ name: k.name, timing: k.timing })) };
+
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [msgs, open]);
 
   const startBooking = (b: Book) => {
-    setOpen(false);                         // close chat so the form is visible
-    openLead(b.program || "", b.plan || ""); // open the same booking form
+    setOpen(false);
+    openLead(b.program || "", b.plan || "");
   };
 
   const send = (text: string) => {
     const t = text.trim();
     if (!t) return;
-    setMsgs((m) => [...m, { role: "user", text: t }, reply(t)]);
+    setMsgs((m) => [...m, { role: "user", text: t }, reply(t, kb)]);
     setVal("");
   };
 

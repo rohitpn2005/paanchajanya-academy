@@ -9,7 +9,7 @@ import Backdrop from "@/components/Backdrop";
 import CursorSpirits from "@/components/CursorSpirits";
 import FloatingActions from "@/components/FloatingActions";
 import Loader from "@/components/Loader";
-import { getPlansMap, getWhatsAppMap } from "@/lib/sheets";
+import { getPlansMap, getWhatsAppMap, getPlans, getPrimaryContact, getKidsActivities } from "@/lib/sheets";
 
 export const metadata: Metadata = {
   title: "PaanchaJanya Academy | Train. Learn. Compete. Transform.",
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const plans = await getPlansMap();
   const nums = await getWhatsAppMap();
+  const [planList, contact, kids] = await Promise.all([getPlans(), getPrimaryContact(), getKidsActivities()]);
   return (
     <html lang="en">
       <head>
@@ -39,7 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SiteScripts />
           <ScrollFX />
           {children}
-          <FloatingActions />
+          <FloatingActions plans={planList} hours={contact.hours || undefined} address={contact.address || undefined} kids={kids} />
           <Footer />
         </LeadProvider>
       </body>

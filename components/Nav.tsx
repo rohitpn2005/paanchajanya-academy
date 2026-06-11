@@ -59,6 +59,7 @@ export default function Nav() {
             {n.label}
           </Link>
         ))}
+        <button className="mm-book" onClick={() => { setMenuOpen(false); open(""); }}>Book now</button>
       </div>
     </header>
   );
