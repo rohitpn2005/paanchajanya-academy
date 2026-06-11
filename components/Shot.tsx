@@ -16,7 +16,7 @@ export default function Shot({ disc, img, cap, variant, extra, cat, style }: Sho
     <div className={cls} data-cat={cat} style={style}>
       {/* Replace this image by overwriting the file at {img} in /public */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={img} alt={cap || "PaanchaJanya Academy"} />
+      <img src={img} alt={cap || "Paanchajanya Academy"} />
       {cap ? <div className="cap">{cap}</div> : null}
     </div>
   );

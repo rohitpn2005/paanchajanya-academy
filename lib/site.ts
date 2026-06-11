@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "PaanchaJanya Academy",
+  name: "Paanchajanya Academy",
   address:
     "Ranka Colony Rd, opposite Mantri Terrace, BTM Layout 2nd Stage, Bilekahalli, Bengaluru 560076",
   addressShort: "Ranka Colony Rd, BTM Layout 2nd Stage, Bengaluru 560076",

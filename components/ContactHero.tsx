@@ -32,7 +32,7 @@ export default function ContactHero({
     return () => clearInterval(id);
   }, []);
 
-  const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello PaanchaJanya Academy, I would like to know more.")}`;
+  const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hello Paanchajanya Academy, I would like to know more.")}`;
 
   return (
     <section ref={ref} className="ct-hero" onMouseMove={onMove}>

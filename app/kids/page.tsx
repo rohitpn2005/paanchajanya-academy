@@ -9,7 +9,7 @@ import { getTestimonialSet } from "@/lib/reviews";
 import { PHONES } from "@/lib/site";
 
 export const metadata = {
-  title: "Kids | PaanchaJanya Academy",
+  title: "Kids | Paanchajanya Academy",
   description: "Dance, karate, chess, yoga and table tennis for kids in BTM Layout, Bengaluru. Age grouped batches, real coaching, a safe space to grow.",
 };
 

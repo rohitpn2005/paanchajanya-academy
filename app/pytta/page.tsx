@@ -9,9 +9,9 @@ import { Stars } from "@/components/Reviews";
 import { PHONES } from "@/lib/site";
 
 export const metadata = {
-  title: "Table Tennis | PaanchaJanya Table Tennis Academy",
+  title: "Table Tennis | Paanchajanya Table Tennis Academy",
   description:
-    "PaanchaJanya Table Tennis Academy in BTM Layout, Bengaluru. Structured coaching from beginner to tournament level on TTFI-approved match tables.",
+    "Paanchajanya Table Tennis Academy in BTM Layout, Bengaluru. Structured coaching from beginner to tournament level on TTFI-approved match tables.",
 };
 
 const P = "Table Tennis (PYTTA)";
@@ -92,7 +92,7 @@ export default async function PyttaPage() {
         page="pytta" variant="full"
         breadcrumb={<><a href="/">Academy</a> &nbsp;/&nbsp; Table Tennis</>}
         title={[{ t: 'Sharper' }, { t: 'every' }, { t: 'rally.', accent: true }]}
-        sub={<>PaanchaJanya Table Tennis Academy. Structured coaching from your first paddle to your first podium, all under one roof in BTM Layout.</>}
+        sub={<>Paanchajanya Table Tennis Academy. Structured coaching from your first paddle to your first podium, all under one roof in BTM Layout.</>}
       >
         <BookButton program={P}>Book a session</BookButton>
         <a href="#plans" className="btn btn-ghost">View plans</a>
@@ -104,7 +104,7 @@ export default async function PyttaPage() {
           <div className="reveal">
             <div className="eyebrow">About the academy</div>
             <p className="lead" style={{ marginTop: 18 }}>
-              A real coaching academy, not a recreation room. At PaanchaJanya Table Tennis Academy we coach <em>technique, footwork and the mental game</em>, and we track your progress the way a sport should.
+              A real coaching academy, not a recreation room. At Paanchajanya Table Tennis Academy we coach <em>technique, footwork and the mental game</em>, and we track your progress the way a sport should.
             </p>
             <div className="prose">
               <p>From a child picking up their first paddle to players chasing district and state rankings, the academy runs a clear, level based pathway. Multiple match standard STAG tables, structured drills, regular match play, and coaching that is actually planned, session by session.</p>
@@ -121,7 +121,7 @@ export default async function PyttaPage() {
             </div>
           </div>
           <div className="reveal d2 ttac-shot">
-            <Shot disc="tt" img="/images/pytta/the-academy-floor.jpg" cap="Inside the PaanchaJanya Table Tennis Academy floor" />
+            <Shot disc="tt" img="/images/pytta/the-academy-floor.jpg" cap="Inside the Paanchajanya Table Tennis Academy floor" />
             <div className="ttac-badge"><b>6</b><span>match tables</span></div>
           </div>
         </div>
@@ -194,7 +194,7 @@ export default async function PyttaPage() {
           <div className="award-gallery reveal d2">
             {["/images/pytta/awards/team-championship.jpg", "/images/pytta/awards/state-ranking-2024.jpg", "/images/pytta/awards/state-ranking-podium.jpg", "/images/pytta/awards/tournament-winner.jpg", "/images/pytta/awards/champions-cup.jpg", "/images/pytta/awards/trophy-day.jpg", "/images/pytta/awards/singles-winner.jpg"].map((img) => (
               <figure className="ag-item" key={img}>
-                <img src={img} alt="PaanchaJanya Table Tennis Academy award" loading="lazy" />
+                <img src={img} alt="Paanchajanya Table Tennis Academy award" loading="lazy" />
               </figure>
             ))}
           </div>
@@ -204,7 +204,7 @@ export default async function PyttaPage() {
       {/* GALLERY — large, balanced photo wall (all real photos) */}
       <section className="section">
         <div className="wrap">
-          <div className="sec-head reveal"><div className="eyebrow">Gallery</div><h2 className="display">Inside the academy</h2><p>From first serves to championship nights, this is where players train, compete and grow at PaanchaJanya Table Tennis Academy.</p></div>
+          <div className="sec-head reveal"><div className="eyebrow">Gallery</div><h2 className="display">Inside the academy</h2><p>From first serves to championship nights, this is where players train, compete and grow at Paanchajanya Table Tennis Academy.</p></div>
           <div className="tt-wall reveal d2">
             {GALLERY.map((g, i) => (
               <figure className="g-tile reveal" style={{ transitionDelay: `${(i % 2) * 90}ms` }} key={g.img}>
@@ -248,7 +248,7 @@ export default async function PyttaPage() {
       {/* CTA */}
       <section className="section cta-band">
         <div className="hero-bg" aria-hidden="true"><div className="glow g1" style={{ opacity: 0.3 }} /></div>
-        <div className="wrap" style={{ position: "relative" }}><div className="reveal"><div className="eyebrow">Join the academy</div><h2 className="display" style={{ marginTop: 14 }}>Pick up a paddle</h2><p className="sub">Book a session and let our coaches assess your level at PaanchaJanya Table Tennis Academy.</p><div className="cta-row"><BookButton program={P}>Book on WhatsApp</BookButton><a className="btn btn-ghost" href={`tel:${PHONES.pytta.tel}`}>Call {PHONES.pytta.display}</a></div></div></div>
+        <div className="wrap" style={{ position: "relative" }}><div className="reveal"><div className="eyebrow">Join the academy</div><h2 className="display" style={{ marginTop: 14 }}>Pick up a paddle</h2><p className="sub">Book a session and let our coaches assess your level at Paanchajanya Table Tennis Academy.</p><div className="cta-row"><BookButton program={P}>Book on WhatsApp</BookButton><a className="btn btn-ghost" href={`tel:${PHONES.pytta.tel}`}>Call {PHONES.pytta.display}</a></div></div></div>
       </section>
     </main>
   );

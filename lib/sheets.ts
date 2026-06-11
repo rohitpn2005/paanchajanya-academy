@@ -36,8 +36,8 @@ const num = (v: string | undefined, d = 9999) => {
 
 // Let owners type friendly program names in the sheet (Yoga, MMA, Kids, ...)
 const PROGRAM_ALIASES: Record<string, string> = {
-  "yoga": "PaanchaJanya Yoga",
-  "paanchajanya yoga": "PaanchaJanya Yoga",
+  "yoga": "Paanchajanya Yoga",
+  "paanchajanya yoga": "Paanchajanya Yoga",
   "mma": "House of Champions",
   "combat": "House of Champions",
   "champions": "House of Champions",
@@ -104,9 +104,9 @@ export async function getFeaturedWorkshop(): Promise<Workshop | undefined> {
 
 export const FALLBACK_WORKSHOPS: Workshop[] = [
   { title: "Breath & Mobility Masterclass",
-    blurb: "A two hour intensive on pranayama led recovery and joint mobility for athletes and beginners alike. Led by senior PaanchaJanya coaches.",
+    blurb: "A two hour intensive on pranayama led recovery and joint mobility for athletes and beginners alike. Led by senior Paanchajanya coaches.",
     date: "Sat, 28 Jun", dateISO: "2026-06-28T07:30", time: "7:30 to 9:00 AM",
-    instructor: "Coach Aditi R.", program: "PaanchaJanya Yoga", status: "featured" },
+    instructor: "Coach Aditi R.", program: "Paanchajanya Yoga", status: "featured" },
   { title: "Self Defence Bootcamp", blurb: "Practical self defence for women and teens. With Coach Neha.",
     date: "5 Jul", time: "10:00 AM", instructor: "Coach Neha", program: "House of Champions", status: "open" },
   { title: "Chess Strategy Clinic", blurb: "Openings and endgames for junior players. With Coach Imran.",
@@ -162,13 +162,13 @@ export async function getPlansMap(): Promise<Record<string, string[]>> {
 }
 
 export const FALLBACK_PLANS: Plan[] = [
-  { program: "PaanchaJanya Yoga", name: "Monthly", duration: "1 Month", price: "₹2,800", note: "plus ₹1,000 admission",
+  { program: "Paanchajanya Yoga", name: "Monthly", duration: "1 Month", price: "₹2,800", note: "plus ₹1,000 admission",
     features: ["All yoga styles", "Morning & evening batches", "Beginner friendly"] },
-  { program: "PaanchaJanya Yoga", name: "3 Months", duration: "3 Months", price: "₹6,600", note: "Save vs monthly",
+  { program: "Paanchajanya Yoga", name: "3 Months", duration: "3 Months", price: "₹6,600", note: "Save vs monthly",
     features: ["All yoga styles", "Free admission", "Priority batch booking"] },
-  { program: "PaanchaJanya Yoga", name: "6 Months", duration: "6 Months", price: "₹11,000", note: "Best value", popular: true,
+  { program: "Paanchajanya Yoga", name: "6 Months", duration: "6 Months", price: "₹11,000", note: "Best value", popular: true,
     features: ["All yoga styles", "Free admission", "1 workshop included", "Progress check ins"] },
-  { program: "PaanchaJanya Yoga", name: "12 Months", duration: "12 Months", price: "₹17,000", note: "Lowest monthly rate",
+  { program: "Paanchajanya Yoga", name: "12 Months", duration: "12 Months", price: "₹17,000", note: "Lowest monthly rate",
     features: ["Everything in 6 months", "2 workshops included", "Guest passes"] },
   { program: "House of Champions", name: "Monthly", duration: "1 Month", price: "₹5,000",
     features: ["All disciplines", "Morning & evening", "Beginner intro track"] },
@@ -269,7 +269,7 @@ export async function getWhatsAppMap(): Promise<Record<string, string>> {
     const prog = normalizeProgram(c.academy);
     map[prog] = c.whatsapp;
   }
-  const def = map["PaanchaJanya Yoga"] || Object.values(map)[0] || fallbackNum;
+  const def = map["Paanchajanya Yoga"] || Object.values(map)[0] || fallbackNum;
   for (const pr of PROGRAMS) if (!map[pr]) map[pr] = def;
   map[""] = def;
   return map;
@@ -279,7 +279,7 @@ export const FALLBACK_CONTACTS: ContactInfo[] = [
   { academy: "General", address: SITE.address, maps: SITE.mapEmbed,
     phone: "+91 98804 22933", whatsapp: "919880422933", email: "hello@paanchajanya.in",
     hours: "Mon to Fri 6:00 AM to 9:00 PM|Saturday 7:00 to 9:00 AM|Sunday by appointment" },
-  { academy: "PaanchaJanya Yoga", whatsapp: "919880422933", phone: "+91 98804 22933" },
+  { academy: "Paanchajanya Yoga", whatsapp: "919880422933", phone: "+91 98804 22933" },
   { academy: "House of Champions", whatsapp: "919880422933", phone: "+91 98804 22933" },
   { academy: "Table Tennis (PYTTA)", whatsapp: "919880422933", phone: "+91 98804 22933" },
   { academy: "Kids Activities", whatsapp: "919880422933", phone: "+91 98804 22933" },

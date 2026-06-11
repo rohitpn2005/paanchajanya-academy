@@ -5,16 +5,16 @@ import { SITE, PHONES } from "@/lib/site";
 import { getPrimaryContact, getContacts } from "@/lib/sheets";
 
 export const metadata = {
-  title: "Contact | PaanchaJanya Academy",
+  title: "Contact | Paanchajanya Academy",
   description: "One location in BTM Layout 2nd Stage, Bilekahalli, Bengaluru 560076. Call, message or drop in.",
 };
 
 const telHref = (s: string) => "tel:" + s.replace(/[^\d+]/g, "");
 const waHref = (digits: string) =>
-  `https://wa.me/${digits}?text=${encodeURIComponent("Hello PaanchaJanya Academy, I would like to know more.")}`;
+  `https://wa.me/${digits}?text=${encodeURIComponent("Hello Paanchajanya Academy, I would like to know more.")}`;
 
 const SHORT: Record<string, string> = {
-  "PaanchaJanya Yoga": "Yoga",
+  "Paanchajanya Yoga": "Yoga",
   "House of Champions": "Champions",
   "Table Tennis (PYTTA)": "Table Tennis",
   "Kids Activities": "Kids",
@@ -85,7 +85,7 @@ export default async function ContactPage() {
               </a>
             </div>
             <div className="ct-map">
-              <iframe title="Map to PaanchaJanya Academy" loading="lazy" src={mapEmbed} />
+              <iframe title="Map to Paanchajanya Academy" loading="lazy" src={mapEmbed} />
               <a className="btn btn-primary ct-map-btn" target="_blank" rel="noopener" href={SITE.mapDirections}>Get directions</a>
             </div>
           </div>

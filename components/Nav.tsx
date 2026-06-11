@@ -31,7 +31,7 @@ export default function Nav() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="brand-logo" src="/images/paanchajanya-logo.png" alt="" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="brand-wordmark" src="/images/paanchajanya-academy-wordmark.png" alt="PaanchaJanya Academy" />
+          <img className="brand-wordmark" src="/images/paanchajanya-academy-wordmark.png" alt="Paanchajanya Academy" />
         </Link>
         <nav className="nav-links" aria-label="Primary">
           {NAV.map((n) => (

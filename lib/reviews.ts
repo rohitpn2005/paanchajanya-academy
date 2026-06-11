@@ -132,7 +132,7 @@ export function overallStats(): { rating: number; count: number } {
    Leave program blank to show a testimonial on every page.
    ========================================================================= */
 const CANON: Record<SetKey, string> = {
-  yoga: "PaanchaJanya Yoga",
+  yoga: "Paanchajanya Yoga",
   champions: "House of Champions",
   pytta: "Table Tennis (PYTTA)",
   kids: "Kids Activities",
@@ -154,7 +154,7 @@ async function loadTestimonials(): Promise<Tagged[] | null> {
         name: (r[0] || "").trim(),
         text: (r[1] || "").trim(),
         rating,
-        program: programText || "PaanchaJanya Academy",
+        program: programText || "Paanchajanya Academy",
         _canon: programText ? normalizeProgram(programText) : "",
       } as Tagged;
     });

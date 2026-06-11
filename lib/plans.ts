@@ -1,5 +1,5 @@
 export const PROGRAMS = [
-  "PaanchaJanya Yoga",
+  "Paanchajanya Yoga",
   "House of Champions",
   "Table Tennis (PYTTA)",
   "Kids Activities",
@@ -12,7 +12,7 @@ export type Program = (typeof PROGRAMS)[number] | "";
 // For now everything goes to one number; the owner can split these per
 // academy later through the Contact tab in Google Sheets.
 const NUMS: Record<string, string> = {
-  "PaanchaJanya Yoga": "919880422933",
+  "Paanchajanya Yoga": "919880422933",
   "House of Champions": "919880422933",
   "Table Tennis (PYTTA)": "919880422933",
   "Kids Activities": "919880422933",
@@ -36,7 +36,7 @@ export type LeadPayload = {
 
 export function buildWhatsAppLink(p: LeadPayload, nums?: Record<string, string>): string {
   const lines = [
-    "Hello PaanchaJanya Academy,",
+    "Hello Paanchajanya Academy,",
     "",
     `My name is ${p.name}${p.age ? ` (age ${p.age})` : ""}.`,
     `I am interested in ${p.program}.`,

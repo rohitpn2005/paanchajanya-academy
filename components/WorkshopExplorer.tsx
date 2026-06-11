@@ -7,14 +7,14 @@ import type { Workshop } from "@/lib/types";
 
 const FILTERS = [
   { k: "all", label: "All" },
-  { k: "PaanchaJanya Yoga", label: "Yoga" },
+  { k: "Paanchajanya Yoga", label: "Yoga" },
   { k: "House of Champions", label: "Champions" },
   { k: "Table Tennis (PYTTA)", label: "Table Tennis" },
   { k: "Kids Activities", label: "Kids" },
 ];
 
 const SHORT: Record<string, string> = {
-  "PaanchaJanya Yoga": "Yoga",
+  "Paanchajanya Yoga": "Yoga",
   "House of Champions": "Champions",
   "Table Tennis (PYTTA)": "Table Tennis",
   "Kids Activities": "Kids",
@@ -23,9 +23,9 @@ const SHORT: Record<string, string> = {
 function gcalLink(w: Workshop) {
   const text = encodeURIComponent(w.title);
   const details = encodeURIComponent(
-    `${w.blurb}${w.instructor ? `\nInstructor: ${w.instructor}` : ""}${w.date ? `\nWhen: ${w.date} ${w.time || ""}` : ""}\nPaanchaJanya Academy`
+    `${w.blurb}${w.instructor ? `\nInstructor: ${w.instructor}` : ""}${w.date ? `\nWhen: ${w.date} ${w.time || ""}` : ""}\nPaanchajanya Academy`
   );
-  const location = encodeURIComponent("PaanchaJanya Academy, Ranka Colony Rd, BTM Layout 2nd Stage, Bengaluru 560076");
+  const location = encodeURIComponent("Paanchajanya Academy, Ranka Colony Rd, BTM Layout 2nd Stage, Bengaluru 560076");
   let dates = "";
   if (w.dateISO && !isNaN(Date.parse(w.dateISO))) {
     const start = new Date(w.dateISO);

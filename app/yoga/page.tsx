@@ -10,12 +10,12 @@ import BreathPacer from "@/components/BreathPacer";
 import { PHONES } from "@/lib/site";
 
 export const metadata = {
-  title: "Yoga | PaanchaJanya Academy",
+  title: "Yoga | Paanchajanya Academy",
   description:
     "Hatha, Iyengar, Ashtanga, Vinyasa and aerial yoga in BTM Layout, Bengaluru. A calm, fully equipped studio with mats, props, rope wall and aerial hammocks.",
 };
 
-const P = "PaanchaJanya Yoga";
+const P = "Paanchajanya Yoga";
 
 const GALLERY: { img: string; cap: string }[] = [
   { img: "/images/yoga/community-flow.jpg", cap: "A full morning batch flowing together" },

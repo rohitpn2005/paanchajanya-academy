@@ -61,7 +61,7 @@ export default function Loader() {
             ))}
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="pj-logo" src="/images/paanchajanya-logo.png" alt="PaanchaJanya" />
+          <img className="pj-logo" src="/images/paanchajanya-emblem.png" alt="Paanchajanya" />
         </div>
         <div className="pj-tag">One conch. Four worlds. Begin.</div>
       </div>

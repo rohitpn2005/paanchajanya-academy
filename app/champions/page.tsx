@@ -11,7 +11,7 @@ import DisciplineFinder from "@/components/DisciplineFinder";
 import { PHONES } from "@/lib/site";
 
 export const metadata = {
-  title: "House of Champions | PaanchaJanya Academy",
+  title: "House of Champions | Paanchajanya Academy",
   description:
     "MMA, Muay Thai, boxing, wrestling and kickboxing in BTM Layout, Bengaluru. Real mats, competed coaches and a clear path from first class to first bout.",
 };

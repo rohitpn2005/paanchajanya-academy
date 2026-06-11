@@ -12,7 +12,7 @@ import Loader from "@/components/Loader";
 import { getPlansMap, getWhatsAppMap, getPlans, getPrimaryContact, getKidsActivities } from "@/lib/sheets";
 
 export const metadata: Metadata = {
-  title: "PaanchaJanya Academy | Train. Learn. Compete. Transform.",
+  title: "Paanchajanya Academy | Train. Learn. Compete. Transform.",
   description:
     "One academy, four worlds. Yoga, combat sports, table tennis and kids programs under one roof in BTM Layout, Bengaluru.",
 };

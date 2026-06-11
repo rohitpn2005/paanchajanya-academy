@@ -25,7 +25,7 @@ export default async function Footer() {
           </div>
           <div>
             <h5>Academies</h5>
-            <Link href="/yoga">PaanchaJanya Yoga</Link>
+            <Link href="/yoga">Paanchajanya Yoga</Link>
             <Link href="/champions">House of Champions</Link>
             <Link href="/pytta">Table Tennis (PYTTA)</Link>
             <Link href="/kids">Kids Academy</Link>

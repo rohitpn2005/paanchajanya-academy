@@ -25,7 +25,7 @@ const CHIPS = ["Programs", "Timings", "Pricing", "Location", "Book a trial"];
 const PROG_CHIPS = ["Yoga", "House of Champions", "Table tennis", "Kids"];
 
 const SHORT: Record<string, string> = {
-  "PaanchaJanya Yoga": "Yoga",
+  "Paanchajanya Yoga": "Yoga",
   "House of Champions": "House of Champions",
   "Table Tennis (PYTTA)": "Table tennis",
   "Kids Activities": "Kids",
@@ -33,13 +33,13 @@ const SHORT: Record<string, string> = {
 
 const GREETING: Msg = {
   role: "bot",
-  text: "Hi, I am the PaanchaJanya assistant. I can help with our programs, class timings, pricing, booking a trial or finding us. What would you like to know?",
+  text: "Hi, I am the Paanchajanya assistant. I can help with our programs, class timings, pricing, booking a trial or finding us. What would you like to know?",
   chips: CHIPS,
 };
 
 function progOf(q: string): string | null {
   if (/table tennis|ping pong|pytta|\btt\b/.test(q)) return "Table Tennis (PYTTA)";
-  if (/yoga|hatha|aerial|meditat|pranayam/.test(q)) return "PaanchaJanya Yoga";
+  if (/yoga|hatha|aerial|meditat|pranayam/.test(q)) return "Paanchajanya Yoga";
   if (/champion|mma|boxing|muay|kick|wrestl|fight|combat|bjj/.test(q)) return "House of Champions";
   if (/karate|dance|chess|\bkid|child|children|son|daughter/.test(q)) return "Kids Activities";
   return null;
@@ -82,7 +82,7 @@ function reply(raw: string, kb: KB): Msg {
       const lines = planLines(kb, p);
       if (lines) return { role: "bot", text: `${SHORT[p]} memberships:\n${lines}\n\nAll plans cover every discipline in the academy. Want to book a trial?`, book: { label: `Book ${SHORT[p]}`, program: p } };
     }
-    const y = startingPrice(kb, "PaanchaJanya Yoga");
+    const y = startingPrice(kb, "Paanchajanya Yoga");
     const h = startingPrice(kb, "House of Champions");
     const t = startingPrice(kb, "Table Tennis (PYTTA)");
     return {
@@ -100,7 +100,7 @@ function reply(raw: string, kb: KB): Msg {
       const lines = kb.kids.filter((k) => k.timing).map((k) => `\u2022 ${k.name}: ${k.timing}`).join("\n");
       return { role: "bot", text: `Kids class timings:\n${lines || "Ask us for the latest kids schedule."}`, book: { label: "Book a kids class", program: "Kids Activities" } };
     }
-    if (p === "PaanchaJanya Yoga")
+    if (p === "Paanchajanya Yoga")
       return { role: "bot", text: `Yoga runs daily in morning and evening batches, beginner to competitive.\n\nReception hours:\n${general}`, book: { label: "Book yoga", program: p } };
     if (p === "House of Champions")
       return { role: "bot", text: `House of Champions runs morning and evening sessions across all disciplines.\n\nReception hours:\n${general}`, book: { label: "Book a combat trial", program: p } };
@@ -118,13 +118,13 @@ function reply(raw: string, kb: KB): Msg {
 
   // CONTACT
   if (has("contact", "phone", "number", "call", "whatsapp", "talk"))
-    return { role: "bot", text: `You can reach the front desk at ${TEL}.`, action: { label: "Message on WhatsApp", href: waLink("Hello PaanchaJanya, I have a question.") } };
+    return { role: "bot", text: `You can reach the front desk at ${TEL}.`, action: { label: "Message on WhatsApp", href: waLink("Hello Paanchajanya, I have a question.") } };
 
   // PROGRAM INFO (describe + book)
   if (has("table tennis", "tt", "ping pong", "pytta"))
     return { role: "bot", text: "Table tennis runs daily from 5 to 9 PM, beginner to advanced, with full tournament preparation.", book: { label: "Book table tennis", program: "Table Tennis (PYTTA)" } };
   if (has("yoga", "hatha", "aerial", "meditat", "pranayam"))
-    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation, in morning and evening batches.", book: { label: "Book yoga", program: "PaanchaJanya Yoga" } };
+    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation, in morning and evening batches.", book: { label: "Book yoga", program: "Paanchajanya Yoga" } };
   if (has("champion", "mma", "boxing", "muay", "kick", "wrestl", "fight", "combat", "bjj"))
     return { role: "bot", text: "House of Champions covers MMA, Muay Thai, boxing, wrestling and kickboxing with coaches who have competed. Beginners welcome.", book: { label: "Book a combat trial", program: "House of Champions" } };
   if (has("karate"))
@@ -185,10 +185,10 @@ export default function FloatingActions({
   return (
     <div className="fab-wrap">
       {open && (
-        <div className="chat" role="dialog" aria-label="PaanchaJanya assistant">
+        <div className="chat" role="dialog" aria-label="Paanchajanya assistant">
           <div className="chat-head">
             <span className="chat-dot" />
-            <div><b>PaanchaJanya assistant</b><small>Replies instantly</small></div>
+            <div><b>Paanchajanya assistant</b><small>Replies instantly</small></div>
             <button className="chat-x" aria-label="Close chat" onClick={() => setOpen(false)}>&times;</button>
           </div>
           <div className="chat-body" ref={bodyRef}>
@@ -229,7 +229,7 @@ export default function FloatingActions({
       )}
 
       <div className="fabs">
-        <a className="fab wa" href={waLink("Hello PaanchaJanya, I have a question.")} target="_blank" rel="noopener" aria-label="WhatsApp us">
+        <a className="fab wa" href={waLink("Hello Paanchajanya, I have a question.")} target="_blank" rel="noopener" aria-label="WhatsApp us">
           <svg viewBox="0 0 32 32" width="32" height="32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.1 1.6 5.9L4 29l8.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-4.9 1 1-4.8-.3-.4A9.7 9.7 0 0 1 6.2 15C6.2 9.6 10.6 5.2 16 5.2S25.8 9.6 25.8 15 21.4 24.8 16 24.8zm5.4-7.3c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.2-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z" /></svg>
         </a>
         <button className="fab chat-toggle" onClick={() => setOpen((v) => !v)} aria-label={open ? "Close assistant" : "Open assistant"}>

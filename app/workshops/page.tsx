@@ -5,9 +5,9 @@ import Countdown from "@/components/Countdown";
 import { getWorkshops, getFeaturedWorkshop } from "@/lib/sheets";
 
 export const metadata = {
-  title: "Workshops & Events | PaanchaJanya Academy",
+  title: "Workshops & Events | Paanchajanya Academy",
   description:
-    "Workshops, camps and masterclasses across all four PaanchaJanya academies in BTM Layout, Bengaluru. Updated regularly, open to members and first timers.",
+    "Workshops, camps and masterclasses across all four Paanchajanya academies in BTM Layout, Bengaluru. Updated regularly, open to members and first timers.",
 };
 
 const STEPS: { no: string; h: string; p: string }[] = [

@@ -29,7 +29,7 @@ const ELEMENTS: { k: string; name: string; sub: string; line: string }[] = [
 ];
 
 const ACADEMIES: { href: string; no: string; tag: string; el: string; accent: string; img: string; title: string; desc: string; cta: string }[] = [
-  { href: "/yoga", no: "01", tag: "Wellness", el: "air", accent: "#ffb347", img: "/images/home/paanchajanya-yoga.jpg", title: "PaanchaJanya Yoga", desc: "Hatha, Iyengar, Ashtanga and Vinyasa flow, with meditation, pranayama and aerial.", cta: "Enter yoga" },
+  { href: "/yoga", no: "01", tag: "Wellness", el: "air", accent: "#ffb347", img: "/images/home/paanchajanya-yoga.jpg", title: "Paanchajanya Yoga", desc: "Hatha, Iyengar, Ashtanga and Vinyasa flow, with meditation, pranayama and aerial.", cta: "Enter yoga" },
   { href: "/champions", no: "02", tag: "Combat", el: "fire", accent: "#ff5340", img: "/images/home/house-of-champions.jpg", title: "House of Champions", desc: "MMA, Muay Thai, boxing, wrestling, kickboxing and functional strength.", cta: "Enter the cage" },
   { href: "/pytta", no: "03", tag: "Sport", el: "water", accent: "#46a8ff", img: "/images/home/table-tennis-pytta.jpg", title: "Table Tennis", desc: "Beginner to advanced coaching with full tournament preparation.", cta: "Enter the academy" },
   { href: "/kids", no: "04", tag: "Youth", el: "earth", accent: "#ff5fa2", img: "/images/home/kids-academy.jpg", title: "Kids Academy", desc: "Dance, karate, chess, table tennis and yoga, built for growing minds.", cta: "Enrol your child" },
@@ -61,7 +61,7 @@ export default async function HomePage() {
             <div className="meaning-emblem reveal">
               <div className="me-rays" aria-hidden="true" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/paanchajanya-logo.png" alt="PaanchaJanya emblem" />
+              <img src="/images/paanchajanya-emblem.png" alt="Paanchajanya emblem" />
             </div>
             <div className="meaning-text reveal d2">
               <p className="lead">Paanchajanya is the great conch of Krishna, sounded across the Mahabharata to call warriors, and dharma itself, to begin.</p>
