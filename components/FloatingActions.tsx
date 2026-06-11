@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { SITE } from "@/lib/site";
+import { useLead } from "./LeadProvider";
 
 const WA = "919880422933";
 const TEL = "+91 98804 22933";
@@ -9,7 +10,8 @@ const waLink = (msg: string) => `https://wa.me/${WA}?text=${encodeURIComponent(m
 const directions = SITE.mapDirections;
 
 type Action = { label: string; href: string };
-type Msg = { role: "bot" | "user"; text: string; chips?: string[]; action?: Action };
+type Book = { label: string; program?: string; plan?: string };
+type Msg = { role: "bot" | "user"; text: string; chips?: string[]; action?: Action; book?: Book };
 
 const CHIPS = ["Programs", "Timings", "Pricing", "Location", "Book a trial"];
 
@@ -42,24 +44,24 @@ function reply(raw: string): Msg {
     return { role: "bot", text: "Memberships are flexible, with monthly and quarterly options that vary by program. For the latest pricing for the program you want, message us and we will share current rates right away.", action: { label: "Ask on WhatsApp", href: waLink("Hello PaanchaJanya, please share current pricing.") } };
 
   if (has("book", "trial", "join", "enrol", "enroll", "register", "sign up", "start", "admission"))
-    return { role: "bot", text: "Booking takes a minute. Tell us the program and we will set up a trial and confirm your slot on WhatsApp.", action: { label: "Book on WhatsApp", href: waLink("Hello PaanchaJanya, I would like to book a trial.") } };
+    return { role: "bot", text: "Booking takes a minute. Tell us the program and we will set up a trial and confirm your slot on WhatsApp.", book: { label: "Start booking" } };
 
   if (has("contact", "phone", "number", "call", "whatsapp", "talk"))
     return { role: "bot", text: `You can reach the front desk at ${TEL}.`, action: { label: "Message on WhatsApp", href: waLink("Hello PaanchaJanya, I have a question.") } };
 
   // programs
   if (has("table tennis", "tt", "ping pong", "pytta"))
-    return { role: "bot", text: "Table tennis runs daily from 5 to 9 PM, beginner to advanced, with full tournament preparation. It builds focus, speed and a real competitive spirit.", action: { label: "Book table tennis", href: waLink("Hello, I am interested in table tennis coaching.") } };
+    return { role: "bot", text: "Table tennis runs daily from 5 to 9 PM, beginner to advanced, with full tournament preparation. It builds focus, speed and a real competitive spirit.", book: { label: "Book table tennis", program: "Table Tennis (PYTTA)" } };
   if (has("yoga", "hatha", "aerial", "meditat", "pranayam"))
-    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation. Kids yoga runs daily 5 to 6 PM, and there are morning and evening batches for adults too. It improves flexibility, balance and calm.", action: { label: "Book yoga", href: waLink("Hello, I am interested in yoga classes.") } };
+    return { role: "bot", text: "We teach Hatha and competitive yoga, plus aerial and meditation. Kids yoga runs daily 5 to 6 PM, and there are morning and evening batches for adults too. It improves flexibility, balance and calm.", book: { label: "Book yoga", program: "PaanchaJanya Yoga" } };
   if (has("champion", "mma", "boxing", "muay", "kick", "wrestl", "fight", "combat", "bjj"))
-    return { role: "bot", text: "House of Champions covers MMA, Muay Thai, boxing, wrestling and kickboxing with coaches who have competed. Beginners are welcome, no experience needed.", action: { label: "Book a combat trial", href: waLink("Hello, I am interested in House of Champions.") } };
+    return { role: "bot", text: "House of Champions covers MMA, Muay Thai, boxing, wrestling and kickboxing with coaches who have competed. Beginners are welcome, no experience needed.", book: { label: "Book a combat trial", program: "House of Champions" } };
   if (has("karate", "martial"))
-    return { role: "bot", text: "Karate and fitness training for kids runs three days a week. It builds strength, self discipline, confidence and fitness.", action: { label: "Book karate", href: waLink("Hello, I am interested in kids karate.") } };
+    return { role: "bot", text: "Karate and fitness training for kids runs three days a week. It builds strength, self discipline, confidence and fitness.", book: { label: "Book karate", program: "Kids Activities", plan: "Karate" } };
   if (has("dance"))
-    return { role: "bot", text: "Kids dance runs daily from 5 to 6 PM. The sessions are fun and build rhythm, coordination and expression.", action: { label: "Book dance", href: waLink("Hello, I am interested in kids dance.") } };
+    return { role: "bot", text: "Kids dance runs daily from 5 to 6 PM. The sessions are fun and build rhythm, coordination and expression.", book: { label: "Book dance", program: "Kids Activities", plan: "Dance" } };
   if (has("chess"))
-    return { role: "bot", text: "Offline chess runs on weekends from 9:30 to 11 AM. It sharpens logical thinking, focus and strategy.", action: { label: "Book chess", href: waLink("Hello, I am interested in chess classes.") } };
+    return { role: "bot", text: "Offline chess runs on weekends from 9:30 to 11 AM. It sharpens logical thinking, focus and strategy.", book: { label: "Book chess", program: "Kids Activities", plan: "Chess" } };
   if (has("kid", "child", "children", "son", "daughter", "age"))
     return { role: "bot", text: "Our kids academy offers table tennis, yoga, karate, dance and chess, in small age grouped batches from around age four. Tell me which activity and I will share its timing.", chips: ["Table tennis", "Yoga", "Karate", "Dance", "Chess"] };
   if (has("workshop", "event", "camp"))
@@ -76,6 +78,7 @@ function reply(raw: string): Msg {
 }
 
 export default function FloatingActions() {
+  const { open: openLead } = useLead();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([GREETING]);
   const [val, setVal] = useState("");
@@ -84,6 +87,11 @@ export default function FloatingActions() {
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [msgs, open]);
+
+  const startBooking = (b: Book) => {
+    setOpen(false);                         // close chat so the form is visible
+    openLead(b.program || "", b.plan || ""); // open the same booking form
+  };
 
   const send = (text: string) => {
     const t = text.trim();
@@ -108,6 +116,9 @@ export default function FloatingActions() {
                   {m.text}
                   {m.action ? (
                     <a className="msg-action" href={m.action.href} target={m.action.href.startsWith("http") ? "_blank" : undefined} rel="noopener">{m.action.label}</a>
+                  ) : null}
+                  {m.book ? (
+                    <button type="button" className="msg-action book" onClick={() => startBooking(m.book!)}>{m.book.label}</button>
                   ) : null}
                 </div>
                 {m.chips ? (
