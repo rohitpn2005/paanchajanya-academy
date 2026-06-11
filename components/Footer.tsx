@@ -16,7 +16,7 @@ export default async function Footer() {
           <div>
             <Link className="brand" href="/">
               <span className="mark" aria-hidden="true" />
-              <span><b>PAANCHAJANYA</b><small>ACADEMY</small></span>
+              <span className="foot-word"><b>PAANCHAJANYA</b>{" "}<small>ACADEMY</small></span>
             </Link>
             <p className="foot-note">
               One academy, four worlds, one roof. Yoga, combat sports, table tennis and kids

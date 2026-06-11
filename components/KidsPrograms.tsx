@@ -28,7 +28,7 @@ export default function KidsPrograms({ activities }: { activities: KidsActivity[
                 <div className="kid-meta">{[a.ageGroup ? `Ages ${a.ageGroup}` : null, a.timing].filter(Boolean).join("  \u00b7  ")}</div>
               ) : null}
               {a.description ? <p>{a.description}</p> : null}
-              <BookButton program={P} plan={a.name} className="btn btn-primary kid-book">Book {a.name}</BookButton>
+              <BookButton program={P} plan={a.name} className="btn btn-primary kid-book">Book a place</BookButton>
             </div>
           </article>
         ))}
