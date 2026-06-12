@@ -3,7 +3,7 @@ import { PROGRAMS } from "./plans";
 import { SITE, PHONES } from "./site";
 
 const SHEETS_API = "https://sheets.googleapis.com/v4/spreadsheets";
-const REVALIDATE_SECONDS = 300; // re-fetch sheet content at most every 5 minutes
+const REVALIDATE_SECONDS = 86400; // re-check the sheet at most once a day (content changes rarely)
 
 /**
  * Read a range from the configured Google Sheet via the public REST endpoint.
