@@ -1,70 +1,192 @@
-# PaanchaJanya Academy — Next.js site
+# Paanchajanya Academy — Website
 
-Production site for PaanchaJanya Academy (Yoga, House of Champions, PYTTA table tennis, and Kids), built with **Next.js 15 (App Router) + TypeScript + React 19**. Reviews are **curated content you edit in one file** (no API key). The **Workshops** page can optionally read from a Google Sheet, but the site runs fully with built-in content, so **no API keys are needed to run or test it**.
+A fast, premium marketing website for **Paanchajanya Academy**, a multi-discipline fitness and wellness venue in Bilekahalli, BTM Layout, Bengaluru. One destination, four academies — **Yoga**, **House of Champions (MMA)**, **Table Tennis (PYTTA)** and **Kids Activities** — each with its own dedicated page, plus workshops and contact.
 
-## Quick start
+<p>
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-000000?logo=next.js&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white">
+  <img alt="Cloudflare Pages" src="https://img.shields.io/badge/Cloudflare%20Pages-F38020?logo=cloudflare&logoColor=white">
+  <img alt="Status" src="https://img.shields.io/badge/status-live-0e8a6e">
+</p>
+
+🔗 **Live:** [paanchajanyaacademy.in](https://paanchajanyaacademy.in)
+
+---
+
+## Overview
+
+The site is a statically-exported Next.js application with a premium dark aesthetic, cinematic hero videos and scroll-driven animations. It is designed to convert visitors into enquiries through one-tap WhatsApp messaging, and it is **owner-editable**: day-to-day content (plans, pricing, workshops, contact details) is managed from a single Google Sheet and published to the live site with one click — no code or developer required.
+
+Hosting is on **Cloudflare Pages** (free tier, commercial use permitted, unlimited bandwidth, global CDN, automatic HTTPS).
+
+## Features
+
+- **Four academies, one site** — separate pages for Yoga, House of Champions, Table Tennis (PYTTA) and Kids, plus Home, Workshops and Contact.
+- **One-tap WhatsApp enquiries** — every call-to-action opens WhatsApp with a pre-filled message routed to the correct academy.
+- **Google Sheets CMS** — Plans, Kids, Workshops and Contact content is read from a Google Sheet at build time.
+- **One-click publishing** — a branded, private "Content Publisher" page triggers a Cloudflare rebuild via a Deploy Hook.
+- **Real testimonials** — genuine Google reviews shown across the site (hard-coded in `lib/reviews.ts`).
+- **Cinematic, optimised media** — hero videos compressed to ~0.5–2 MB with faststart for near-instant playback.
+- **Responsive & fast** — mobile-first layout, static export, served from Cloudflare's edge with HTTPS.
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript, React 19 |
+| Animation | Framer Motion, GSAP |
+| Styling | Global CSS (custom design system) |
+| Content | Google Sheets API v4 (build-time fetch) |
+| Output | Static export (`output: "export"` → `out/`) |
+| Hosting | Cloudflare Pages |
+| Domain/DNS | Cloudflare (registrar: GoDaddy) |
+
+## Project Structure
+
+```
+paanchajanya-academy/
+├── app/
+│   ├── layout.tsx              # Root layout, fonts, metadata
+│   ├── page.tsx                # Home
+│   ├── globals.css             # Design system + responsive rules
+│   ├── icon.png / apple-icon.png
+│   ├── yoga/page.tsx
+│   ├── champions/page.tsx      # House of Champions (MMA)
+│   ├── pytta/page.tsx          # Table Tennis
+│   ├── kids/page.tsx
+│   ├── workshops/page.tsx
+│   └── contact/page.tsx
+├── components/
+│   ├── HeroVideo.tsx           # Looping muted hero (poster + faststart mp4)
+│   ├── Reviews.tsx             # Rating + review helpers
+│   ├── ReviewMarquee.tsx       # Scrolling testimonials
+│   ├── Loader.tsx              # Branded loading screen
+│   ├── ScrollFX.tsx            # GSAP scroll animations
+│   └── SiteScripts.tsx         # Animated counters, etc.
+├── lib/
+│   ├── sheets.ts               # Google Sheets readers (build-time)
+│   ├── plans.ts                # Program constants
+│   ├── reviews.ts              # Hard-coded testimonials
+│   └── types.ts
+├── public/
+│   ├── images/                 # Logos, posters, hero stills
+│   └── videos/                 # Optimised hero videos
+├── next.config.mjs             # Static export config
+├── package.json
+└── tsconfig.json
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18.18+ (LTS recommended)
+- npm
+
+### Install & run
 
 ```bash
 npm install
-cp .env.example .env.local   # optional: add your Google Sheet to go live
-npm run dev                  # http://localhost:3000
+npm run dev          # local dev at http://localhost:3000
 ```
+
+### Build (static export)
 
 ```bash
-npm run build && npm start   # production build
+npm run build        # outputs the static site to ./out
 ```
 
-Requires Node 18.18+ (built and tested on Node 22).
+The `out/` directory is the deployable artifact — pure static HTML/CSS/JS/assets.
 
-## Connect Workshops (Google Sheet)
+## Environment Variables
 
-The Workshops page reads from a Google Sheet via the public Sheets REST API. No service account needed.
+Content is fetched from Google Sheets **at build time only** — these keys are never shipped to the browser. Create a `.env.local` for local builds and set the same two variables in Cloudflare Pages (Settings → Environment variables):
 
-1. Create a Google Sheet with a tab named exactly `Workshops`. Row 1 is headers, data from row 2. Columns A–H:
+| Variable | Description |
+|---|---|
+| `SHEET_ID` | The Google Sheet ID (the long string in the sheet's URL). |
+| `GOOGLE_SHEETS_API_KEY` | Google Cloud API key with the Sheets API enabled. |
 
-   | title | blurb | date | time | instructor | program | image | status |
-   |-------|-------|------|------|------------|---------|-------|--------|
-   | Breath & Mobility Masterclass | A two hour intensive… | Sat, 28 Jun | 7:30 to 9:00 AM | Coach Aditi R. | PaanchaJanya Yoga | https://… | featured |
+The content sheet must be shared as **"Anyone with the link → Viewer"** so the API key can read it. The owner is added as an Editor by email.
 
-   - `program` must be one of: `PaanchaJanya Yoga`, `House of Champions`, `Table Tennis (PYTTA)`, `Kids Activities`, `Not sure yet` (routes the WhatsApp lead to the right desk).
-   - `image` is optional — a direct image URL (e.g. a Google Drive direct link). If blank, a styled poster placeholder is shown.
-   - `status` is `featured`, `open`, or `closed`. The `featured` row appears in the highlighted panel with a live countdown; `closed` rows are hidden.
-2. Share the sheet: **Anyone with the link → Viewer**.
-3. In [Google Cloud Console](https://console.cloud.google.com/), enable the **Google Sheets API** and create an **API key**.
-4. Add to `.env.local`:
+## Content Management (CMS)
 
-   ```
-   SHEET_ID=your_spreadsheet_id
-   GOOGLE_SHEETS_API_KEY=your_api_key
-   ```
+Editable content lives in one Google Sheet with these tabs:
 
-Refreshes at most every 5 minutes (ISR). Until connected, fallback workshops in `lib/sheets.ts` are shown.
+| Tab | Controls |
+|---|---|
+| `Plans` | Membership plans & pricing per academy |
+| `Kids` | Kids programme details |
+| `Workshops` | Workshop listings |
+| `Contact` | Contact details / WhatsApp number |
 
+**Plans columns:** `program`, `plan name`, `duration`, `price`, `features` (separate each with a `\|` bar), `active` (`TRUE` shows / `FALSE` hides), `order`, `popular`, `note`.
 
-## How it's put together
+> ⚠️ Do not rename tabs or the header row, and do not delete or reorder columns — the build reads them by name.
 
-- `app/` — one folder per route (`/`, `/yoga`, `/champions`, `/pytta`, `/kids`, `/workshops`, `/reviews`, `/contact`). `layout.tsx` loads fonts, the design system, the booking provider, nav, footer, and the client effects.
-- `lib/sheets.ts` — Google Sheets reader for workshops (`getWorkshops`, `getFeaturedWorkshop`) plus fallback data.
-- `lib/reviews.ts` — curated reviews + rating stats (edit your reviews here).
-- `components/Reviews.tsx` — the rating header, distribution bars, and review cards (compact + full variants).
-- `lib/plans.ts` — programs, membership plans (prices live here), and the WhatsApp link builder + per-program routing numbers.
-- `lib/site.ts` — address, map, nav links, per-route accent theme, contact desks.
-- `components/LeadProvider.tsx` — the booking modal in React context; any `BookButton` (even on a server-rendered page) opens it and pre-fills the program and plan.
-- `components/SiteScripts.tsx` — reveal-on-scroll, count-ups, rating bars, gallery filters, and per-route accent theming, re-run on each navigation.
-- `components/Hero.tsx` — Framer Motion hero (staggered entrance). `components/ScrollFX.tsx` — GSAP scroll-progress bar + hero parallax.
-- `components/Nav.tsx`, `Footer.tsx`, `HeroVideo.tsx`, `Shot.tsx`, `Countdown.tsx`, `ContactForm.tsx`.
+Testimonials are **not** in the sheet; they are hard-coded in `lib/reviews.ts`.
 
-## Styling note
+### Publishing changes (non-technical)
 
-The design system is the original hand-built CSS, ported verbatim as `app/globals.css`, so the look matches the approved design exactly. Tailwind was intentionally **not** layered on top to avoid its preflight reset fighting the existing reset and causing visual drift. If you want Tailwind for future utility work, add it without preflight (`corePlugins: { preflight: false }`).
+1. Edit the Google Sheet.
+2. Open the private **Content Publisher** page → **Publish my changes**.
+3. The page calls a Cloudflare **Deploy Hook**, which rebuilds and redeploys the site (~1 minute).
 
-**Animation.** Hero entrances use **Framer Motion** (`components/Hero.tsx`): the eyebrow/breadcrumb, headline words, sub and CTAs stagger in on mount and on every client navigation. Scroll polish uses **GSAP + ScrollTrigger** (`components/ScrollFX.tsx`): a top scroll-progress bar, a slow hero zoom, and a drift/fade on the hero content and glows as you scroll past. Both respect `prefers-reduced-motion` (entrances fade without movement, the progress bar hides), and GSAP triggers are rebuilt per route to stay in sync with App Router navigation.
+A full illustrated owner's guide is provided separately (`Paanchajanya-Website-Guide.pdf`).
 
-## Images and videos
+## Deployment — Cloudflare Pages
 
-Photos live in `public/images/**` and hero background clips in `public/videos/**`, using the same filenames as the static prototype — overwrite a placeholder with your own file of the same name and it appears automatically. Workshop posters are dynamic (the `image` column in the sheet). See the static prototype's `images/README.txt` and `videos/README.txt` for the full naming map.
+Connect the GitHub repo as a Pages project with:
 
-## Deploy
+| Setting | Value |
+|---|---|
+| Production branch | `main` |
+| Build command | `npm run build` |
+| Build output directory | `out` |
+| Environment variables | `SHEET_ID`, `GOOGLE_SHEETS_API_KEY` |
 
-Push to GitHub and import into **Vercel** (zero config for Next.js). Add `SHEET_ID` and `GOOGLE_SHEETS_API_KEY` as Environment Variables in the Vercel project settings. Any host that runs `next build` / `next start` (or a Node server) works too.
-"# PAANCHAJANYA" 
+Every push to `main` triggers a build. A **Deploy Hook** URL powers the one-click Publisher page. The permanent links are the production URL (`<project>.pages.dev`) and the custom domain — per-deployment hashed URLs are immutable snapshots and are expected to change each build.
+
+### Custom domain
+`paanchajanyaacademy.in` is added to the same Cloudflare account, nameservers point to Cloudflare, and both the apex and `www` are attached to the Pages project.
+
+## Media Optimisation
+
+Hero videos are muted, looping backgrounds and should stay small for fast loads. Re-encode any new hero with:
+
+```bash
+ffmpeg -i input.mp4 \
+  -vf "scale='min(1280,iw)':-2" \
+  -c:v libx264 -crf 30 -preset slow -an \
+  -movflags +faststart \
+  <page>-hero.mp4
+```
+
+This caps to 720p, drops the audio track, and moves the index to the front (`+faststart`) so playback starts before the file fully downloads. Each page also has a matching poster image at `public/images/heroes/<page>.jpg` for instant first paint.
+
+## Routes
+
+| Path | Page |
+|---|---|
+| `/` | Home |
+| `/yoga` | Paanchajanya Yoga |
+| `/champions` | House of Champions (MMA) |
+| `/pytta` | Table Tennis (PYTTA) |
+| `/kids` | Kids Activities |
+| `/workshops` | Workshops |
+| `/contact` | Contact |
+
+## Maintenance Notes
+
+- **Content edits** → Google Sheet + Publish (no deploy needed by hand).
+- **Testimonials / copy / design changes** → edit code, commit, push.
+- **New hero video** → optimise with the ffmpeg command above, keep the same filename, push.
+- **Keep the Publisher page private** (bookmark it; do not commit it to a public repo).
+
+---
+
+<p align="center">
+  <strong>Designed, built &amp; maintained by Rotek Digital</strong><br>
+  <em>Digital solutions for businesses to grow.</em>
+</p>
