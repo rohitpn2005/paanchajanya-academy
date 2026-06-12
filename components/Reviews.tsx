@@ -28,7 +28,6 @@ function RatingBadge({ rating, count }: { rating: number; count: number }) {
     <div style={{ display: "inline-flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
       <span style={{ fontFamily: "Archivo", fontWeight: 900, fontSize: "1.5rem", color: "var(--accent)" }}>{rating.toFixed(1)}</span>
       <Stars n={rating} />
-      <span style={{ color: "var(--muted)", fontSize: ".84rem" }}>{count.toLocaleString("en-IN")} reviews</span>
     </div>
   );
 }

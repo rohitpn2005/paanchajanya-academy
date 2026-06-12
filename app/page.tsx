@@ -110,7 +110,7 @@ export default async function HomePage() {
       <section className="section counters">
         <div className="wrap"><div className="count-grid">
           <div className="count reveal"><div className="n" data-count="1200" data-suf="+">0</div><div className="l">Active students</div></div>
-          <div className="count reveal d2"><div className="n" data-count="850" data-suf="+">0</div><div className="l">Five star reviews</div></div>
+          <div className="count reveal d2"><div className="n" data-count="6">0</div><div className="l">Days a week, AM &amp; PM</div></div>
           <div className="count reveal d3"><div className="n" data-count="60" data-suf="+">0</div><div className="l">Workshops hosted</div></div>
           <div className="count reveal d4"><div className="n" data-count="4">0</div><div className="l">Academies, one roof</div></div>
         </div></div>
@@ -148,7 +148,6 @@ export default async function HomePage() {
             <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
               <span style={{ fontFamily: "Archivo", fontWeight: 900, fontSize: "1.5rem", color: "var(--accent)" }}>{stats.rating.toFixed(1)}</span>
               <Stars n={stats.rating} />
-              <span style={{ color: "var(--muted)", fontSize: ".84rem" }}>{stats.count.toLocaleString("en-IN")}+ reviews across all four academies</span>
             </div>
           </div>
         </div>

@@ -219,7 +219,6 @@ export default async function YogaPage() {
             <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
               <span style={{ fontFamily: "Archivo", fontWeight: 900, fontSize: "1.5rem", color: "var(--accent)" }}>{reviews.rating.toFixed(1)}</span>
               <Stars n={reviews.rating} />
-              <span style={{ color: "var(--muted)", fontSize: ".84rem" }}>{reviews.count.toLocaleString("en-IN")} member reviews</span>
             </div>
           </div>
         </div>
