@@ -1,0 +1,5 @@
+# robots.txt — Paanchajanya Academy
+User-agent: *
+Allow: /
+
+Sitemap: https://paanchajanyaacademy.in/sitemap.xml
