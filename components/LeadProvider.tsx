@@ -46,6 +46,25 @@ export default function LeadProvider({ children, plans = {}, nums = {} }: { chil
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, close]);
 
+  // Make the browser / phone Back button simply close the modal
+  // instead of navigating away from (or exiting) the site.
+  useEffect(() => {
+    if (!isOpen) return;
+    // add a history entry that represents "modal is open"
+    window.history.pushState({ pjLead: true }, "");
+    const onPop = () => close(); // Back pressed -> close the modal
+    window.addEventListener("popstate", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      // If the modal was closed from the UI (X / backdrop / Escape / submit)
+      // rather than by Back, remove the history entry we added so the
+      // back-stack stays clean.
+      if (window.history.state && window.history.state.pjLead) {
+        window.history.back();
+      }
+    };
+  }, [isOpen, close]);
+
   const planList = plans[program] || [];
 
   const submit = () => {
