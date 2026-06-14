@@ -36,7 +36,15 @@ export default async function ContactPage() {
   const [primary, contacts] = await Promise.all([getPrimaryContact(), getContacts()]);
 
   const address = primary.address || SITE.address;
-  const mapEmbed = primary.maps || SITE.mapEmbed;
+  // Only use the sheet's map value if it is an *embeddable* URL. A normal
+  // Google Maps share link (maps.app.goo.gl / google.com/maps/...) cannot be
+  // shown in an iframe, so in that case we build a keyless embed from the
+  // address instead — the map always renders no matter what link is pasted.
+  const isEmbeddable = (u?: string) =>
+    !!u && (u.includes("output=embed") || u.includes("/maps/embed"));
+  const mapEmbed = isEmbeddable(primary.maps)
+    ? (primary.maps as string)
+    : `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=16&output=embed`;
   const tel = primary.phone || PHONES.yoga.tel;
   const waDigits = primary.whatsapp || tel.replace(/\D/g, "");
   const email = primary.email;
