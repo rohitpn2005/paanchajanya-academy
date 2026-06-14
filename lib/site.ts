@@ -1,12 +1,11 @@
 export const SITE = {
   name: "Paanchajanya Academy",
   address:
-    "Ranka Colony Rd, opposite Mantri Terrace, BTM Layout 2nd Stage, Bilekahalli, Bengaluru 560076",
+    "Ranka Colony Rd, opposite Mantri Terrace, BTM Layout 2nd Stage, Bilekahalli, Bengaluru, Karnataka 560076",
   addressShort: "Ranka Colony Rd, BTM Layout 2nd Stage, Bengaluru 560076",
   mapEmbed:
-    "https://maps.google.com/maps?q=Ranka%20Colony%20Road%20Mantri%20Terrace%20BTM%20Layout%202nd%20Stage%20Bilekahalli%20Bengaluru&z=16&output=embed",
-  mapDirections:
-    "https://www.google.com/maps/dir/?api=1&destination=Ranka%20Colony%20Road%20opposite%20Mantri%20Terrace%20BTM%20Layout%202nd%20Stage%20Bilekahalli%20Bengaluru%20560076",
+    "https://maps.google.com/maps?q=Paanchajanya%20Academy%2C%20Ranka%20Colony%20Rd%2C%20BTM%20Layout%202nd%20Stage%2C%20Bilekahalli%2C%20Bengaluru%2C%20Karnataka%20560076&z=16&output=embed",
+  mapDirections: "https://maps.app.goo.gl/ikbdR5g6MjQ6ax5c6",
 };
 
 export const NAV = [

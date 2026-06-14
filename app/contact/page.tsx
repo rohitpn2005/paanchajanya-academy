@@ -35,16 +35,10 @@ function Ic({ name }: { name: string }) {
 export default async function ContactPage() {
   const [primary, contacts] = await Promise.all([getPrimaryContact(), getContacts()]);
 
-  const address = primary.address || SITE.address;
-  // Only use the sheet's map value if it is an *embeddable* URL. A normal
-  // Google Maps share link (maps.app.goo.gl / google.com/maps/...) cannot be
-  // shown in an iframe, so in that case we build a keyless embed from the
-  // address instead — the map always renders no matter what link is pasted.
-  const isEmbeddable = (u?: string) =>
-    !!u && (u.includes("output=embed") || u.includes("/maps/embed"));
-  const mapEmbed = isEmbeddable(primary.maps)
-    ? (primary.maps as string)
-    : `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=16&output=embed`;
+  // Location is hardcoded in lib/site.ts (not managed from the sheet).
+  const address = SITE.address;
+  const mapEmbed = SITE.mapEmbed;
+  const directions = SITE.mapDirections;
   const tel = primary.phone || PHONES.yoga.tel;
   const waDigits = primary.whatsapp || tel.replace(/\D/g, "");
   const email = primary.email;
@@ -61,7 +55,7 @@ export default async function ContactPage() {
 
   return (
     <main className="ct">
-      <ContactHero tel={tel} whatsapp={waDigits} directions={SITE.mapDirections} />
+      <ContactHero tel={tel} whatsapp={waDigits} directions={directions} />
 
       {/* INFO + MAP */}
       <section className="section">
@@ -86,7 +80,7 @@ export default async function ContactPage() {
                   <span className="ct-go" aria-hidden="true">&rarr;</span>
                 </a>
               ) : null}
-              <a className="ct-row" href={SITE.mapDirections} target="_blank" rel="noopener">
+              <a className="ct-row" href={directions} target="_blank" rel="noopener">
                 <span className="ct-ic"><Ic name="pin" /></span>
                 <span className="ct-text"><span className="ct-lbl">Address</span><b>{address}</b></span>
                 <span className="ct-go" aria-hidden="true">&rarr;</span>
@@ -94,7 +88,7 @@ export default async function ContactPage() {
             </div>
             <div className="ct-map">
               <iframe title="Map to Paanchajanya Academy" loading="lazy" src={mapEmbed} />
-              <a className="btn btn-primary ct-map-btn" target="_blank" rel="noopener" href={SITE.mapDirections}>Get directions</a>
+              <a className="btn btn-primary ct-map-btn" target="_blank" rel="noopener" href={directions}>Get directions</a>
             </div>
           </div>
         </div>
